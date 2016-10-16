@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	fmt.Printf("%d", 5);
+	port := 8080
+	fmt.Printf("Server running on port: %d", port);
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/api/", Index)
 	router.HandleFunc("/auth/signin", Auth)
