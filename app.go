@@ -15,7 +15,17 @@ func main() {
 	router.HandleFunc("/api/", Index)
 	router.HandleFunc("/auth/signin", Auth)
 	router.HandleFunc("/auth/fbverify", Auth)
-	log.Fatal(http.ListenAndServe(":8080", router))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("."))))
+
+	srv := &http.Server{
+		Handler: router,
+		Addr: "127.0.0.1:8080",
+	}
+	log.Fatal(srv.ListenAndServe())
+}
+
+func PrivacyPolicy(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 }
 
 func fbVerify(w http.ResponseWriter, r *http.Request) {
@@ -23,6 +33,7 @@ func fbVerify(w http.ResponseWriter, r *http.Request) {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("FUCK")
 	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 }
 
